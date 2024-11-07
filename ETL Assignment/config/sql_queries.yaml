@@ -1,0 +1,13 @@
+# sql_queries.yaml
+queries:
+  get_customer_purchases: |
+    SELECT c.customer_id AS Customer, c.age AS Age, i.item_name AS Item, 
+           SUM(CASE WHEN o.quantity IS NOT NULL THEN o.quantity ELSE 0 END) AS Quantity
+    FROM customers c
+    LEFT JOIN sales s ON c.customer_id = s.customer_id
+    LEFT JOIN orders o ON s.sales_id = o.sales_id
+    LEFT JOIN items i ON o.item_id = i.item_id
+    WHERE c.age >= 18 AND c.age <= 35
+    GROUP BY c.customer_id, c.age, i.item_name
+    ORDER BY c.customer_id, i.item_name;
+
